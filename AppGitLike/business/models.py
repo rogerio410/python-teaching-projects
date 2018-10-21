@@ -5,7 +5,6 @@ class Repositorio:
         self.remotes = []
         self.arquivos = []
 
-
     def novo_arquivo(self, nome):
         pass
 
@@ -14,7 +13,17 @@ class Repositorio:
 
 
 class Arquivo:
-    pass
+
+    def __init__(self, nome):
+        self.nome = nome
+        self.linhas = []
+        self.tracked = False
+
+    def add_linha(self, linha=''):
+        pass
+
+    def remove_linha(self, index=None):
+        pass
 
 
 class Commit:
