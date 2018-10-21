@@ -4,7 +4,7 @@
     $ export FLASK_APP=application.app.py
     $ flask run
 """
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
 from business.models import Repositorio
 
 
@@ -41,3 +41,24 @@ def apagar_repositorio(nome):
     return redirect('/')
 
 
+@app.route('/repositorio/<string:nome>')
+def entrar_repositorio(nome):
+    try:
+        repositorio = obter_repositorio(por_nome=nome)
+        session['repositorio'] = repositorio.nome
+        flash('Repositório selecionado')
+        return render_template('repositorio.html', repositorio=repositorio)
+    except:
+        flash('Repositório inválido', 'erro')
+        return redirect('/')
+
+
+@app.route('/sair-repositorio')
+def sair_repositorio():
+    session.clear()
+    return redirect('/')
+
+
+def obter_repositorio(por_nome):
+    repositorio = list(filter(lambda x: x.nome == por_nome, repositorios))[0]
+    return repositorio
