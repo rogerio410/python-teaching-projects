@@ -6,6 +6,14 @@
 </head>
 <body>
 
+{% for categoria, msg in get_flashed_messages(with_categories=True) %}
+
+    {% if categoria == 'erro' %}
+        <p style="color: red;">{{ msg }}</p>
+    {% else %}
+         <p style="color: blue;">{{ msg }}</p>
+    {% endif %}
+{% endfor %}
 
 {% block conteudo %}
 {% endblock %}

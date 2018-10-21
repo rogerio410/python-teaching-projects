@@ -1,5 +1,23 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-    <h1>Hi base...</h1>
+    <h2>Git Like App: Brincando com Controle de Versão</h2>
+
+    <form action="/novo-repositorio" method="post">
+        <input name="nome" placeholder="Novo repositório" required/>
+        <input type="submit" value="Criar Repositório"/>
+    </form>
+
+    <h4>Repositórios: {{ repositorios.__len__() }}</h4>
+
+    <ul>
+        {% for repo in repositorios %}
+            <li>
+                {{ repo.nome }} |
+                <a href="/apagar-repositorio/{{repo.nome}}">Apagar</a>
+                <a href="/entrar-repositorio/{{repo.nome}}">Entrar</a>
+            </li>
+        {% endfor %}
+    </ul>
+
 {% endblock %}
