@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-    {{ session.repositorio }}
-    <a href="/sair-repositorio">Sair Repo</a>
+    <h3>Repositório atual: {{ session.repositorio }} <a href="/sair-repositorio">sair</a></h3>
 
+
+
+    <form action="/novo-arquivo" method="post">
+        <input name="nome" placeholder="Novo arquivo" required/>
+        <input type="submit" value="Criar Arquivo"/>
+    </form>
 
     <div>
-        <h4>Arquivos</h4>
-        <form action="/novo-arquivo" method="post">
-            <input name="nome" placeholder="Novo arquivo" required/>
-            <input type="submit" value="Criar Arquivo"/>
-        </form>
 
-        <p>Untracked Files</p>
+        <h4>Untracked Files</h4>
         <table border="1">
         {% for arquivo in repositorio.untracked_files() %}
             <tr>
                 <td>{{ arquivo.nome }}</td>
-                <td><a href="/git-add/{{ arquivo.nome }}">Add</a></td>
+                <td><a href="/git-add/{{ arquivo.nome }}">git-add</a></td>
             </tr>
         {% endfor %}
         </table>
+    </div>
 
-        <p>Tracked Files</p>
+    <div>
+
+        <h4>Tracked Files</h4>
         <table border="1">
         {% for arquivo in repositorio.tracked_files() %}
             <tr>
                 <td>{{ arquivo.nome }}</td>
-                <td><a href="/new-line/{{ arquivo.nome }}">Add linha</a></td>
+                <td><a href="/new-line/{{ arquivo.nome }}">add-linha</a></td>
+                <td><a href="/git-add/{{ arquivo.nome }}">git-add</a></td>
             </tr>
         {% endfor %}
         </table>
@@ -36,7 +40,7 @@
 
     <div>
         <h4>Unstaged Changes ({{ repositorio.unstaged_changes() | length}})</h4>
-        <table>
+        <table border="1">
             {% for mudanca in repositorio.unstaged_changes() %}
                 <tr>
                     <td>{{ mudanca.tipo }}</td>
@@ -48,7 +52,7 @@
 
     <div>
         <h4>Staged Changes ({{ repositorio.staged_changes() | length}})</h4>
-        <table>
+        <table border="1">
             {% for mudanca in repositorio.staged_changes() %}
                 <tr>
                     <td>{{ mudanca.tipo }}</td>

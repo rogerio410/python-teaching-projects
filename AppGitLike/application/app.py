@@ -38,6 +38,7 @@ def apagar_repositorio(nome):
     for r in list(repositorios):
         if r.nome == nome:
             repositorios.remove(r)
+            flash('Repo removido!')
     return redirect('/')
 
 

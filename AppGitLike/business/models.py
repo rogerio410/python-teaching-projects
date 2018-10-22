@@ -66,15 +66,15 @@ class Arquivo:
                 mudanca.marks_as_staged()
         else:
             self.tracked = True
-            self.mudancas.append(Mudanca(self, 'New file', staged=True))
+            self.mudancas.append(Mudanca(self, 'new file', staged=True))
 
     def add_linha(self):
         if self.tracked:
-            self.mudancas.append(Mudanca(self, 'New Line'))
+            self.mudancas.append(Mudanca(self, 'new Line'))
 
     def remove_linha(self):
         if self.tracked:
-            self.mudancas.append(Mudanca(self, 'Removed line'))
+            self.mudancas.append(Mudanca(self, 'removed line'))
 
     # propriedades
     def unstaged_mudancas(self):
