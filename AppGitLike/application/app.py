@@ -46,10 +46,10 @@ def entrar_repositorio(nome):
     try:
         repositorio = obter_repositorio(por_nome=nome)
         session['repositorio'] = repositorio.nome
-        flash('Repositório selecionado')
         return render_template('repositorio.html', repositorio=repositorio)
-    except:
-        flash('Repositório inválido', 'erro')
+    except Exception as e:
+        print(e)
+        flash('Repositório inválido!', 'erro')
         return redirect('/')
 
 
@@ -59,6 +59,15 @@ def sair_repositorio():
     return redirect('/')
 
 
+@app.route('/novo-arquivo', methods=['POST'])
+def novo_arquivo():
+    nome = request.form['nome']
+    repositorio: Repositorio = obter_repositorio(por_nome=session.get('repositorio'))
+    repositorio.novo_arquivo(nome)
+    flash('Arquivo criado com sucesso!')
+    return redirect('/repositorio/'+repositorio.nome)
+
+
 def obter_repositorio(por_nome):
-    repositorio = list(filter(lambda x: x.nome == por_nome, repositorios))[0]
-    return repositorio
+    repositorio = list(filter(lambda x: x.nome == por_nome, repositorios))
+    return repositorio[0]
