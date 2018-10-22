@@ -6,11 +6,10 @@
 </head>
 <body>
 
-<h2>Git Like App</h2>
-<p>Brincando com Controle de Versão</p>
+<h4>Git Like App: <span style="font-weight: normal; font-style: italic">brincando de Controle de Versão!</span></h4>
+
 
 {% for categoria, msg in get_flashed_messages(with_categories=True) %}
-
     {% if categoria == 'erro' %}
         <p style="color: red;">{{ msg }}</p>
     {% else %}

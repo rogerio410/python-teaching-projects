@@ -49,7 +49,6 @@ def entrar_repositorio(nome):
         session['repositorio'] = repositorio.nome
         return render_template('repositorio.html', repositorio=repositorio)
     except Exception as e:
-        print(e)
         flash('Repositório inválido!', 'erro')
         return redirect('/')
 

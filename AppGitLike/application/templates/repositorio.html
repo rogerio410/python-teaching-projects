@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-    <h3>Repositório atual: {{ session.repositorio }} <a href="/sair-repositorio">sair</a></h3>
+    <h4>Repositório atual: {{ session.repositorio }} <a href="/sair-repositorio">sair</a></h4>
 
 
 
@@ -12,7 +12,7 @@
 
     <div>
 
-        <h4>Untracked Files</h4>
+        <h5>Untracked Files</h5>
         <table border="1">
         {% for arquivo in repositorio.untracked_files() %}
             <tr>
@@ -25,7 +25,7 @@
 
     <div>
 
-        <h4>Tracked Files</h4>
+        <h5>Tracked Files</h5>
         <table border="1">
         {% for arquivo in repositorio.tracked_files() %}
             <tr>
@@ -39,7 +39,7 @@
     </div>
 
     <div>
-        <h4>Unstaged Changes ({{ repositorio.unstaged_changes() | length}})</h4>
+        <h5>Unstaged Changes ({{ repositorio.unstaged_changes() | length}})</h5>
         <table border="1">
             {% for mudanca in repositorio.unstaged_changes() %}
                 <tr>
@@ -51,7 +51,7 @@
     </div>
 
     <div>
-        <h4>Staged Changes ({{ repositorio.staged_changes() | length}})</h4>
+        <h5>Staged Changes ({{ repositorio.staged_changes() | length}})</h5>
         <table border="1">
             {% for mudanca in repositorio.staged_changes() %}
                 <tr>
@@ -60,6 +60,10 @@
                 </tr>
             {% endfor %}
         </table>
+        <form action="#" method="post">
+            <input name="msg" placeholder="commit message" required/>
+            <input type="submit" value="git-commit">
+        </form>
     </div>
 
 {% endblock %}
