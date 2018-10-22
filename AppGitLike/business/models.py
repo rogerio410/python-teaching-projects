@@ -18,7 +18,13 @@ class Repositorio:
     def remover_arquivo(self, nome):
         pass
 
-    # Git Commands
+    def buscar_arquivo(self, nome_arquivo: str):
+        for arquivo in self.arquivos:
+            if arquivo.nome == nome_arquivo:
+                return arquivo
+        return None
+
+    # Git Commands and features
     def add(self, nome_arquivo: str):
         for arquivo in self.arquivos:
             if arquivo.nome == nome_arquivo:
@@ -30,6 +36,20 @@ class Repositorio:
 
     def untracked_files(self):
         return list(filter(lambda x: not x.tracked, self.arquivos))
+
+    def unstaged_changes(self):
+        lista_mudancas = []
+        for a in self.tracked_files():
+            for m in a.unstaged_mudancas():
+                lista_mudancas.append(m)
+        return lista_mudancas
+
+    def staged_changes(self):
+        lista_mudancas = []
+        for a in self.tracked_files():
+            for m in a.staged_mudancas():
+                lista_mudancas.append(m)
+        return lista_mudancas
 
 
 class Arquivo:
@@ -46,15 +66,22 @@ class Arquivo:
                 mudanca.marks_as_staged()
         else:
             self.tracked = True
-            self.mudancas.append(Mudanca('New file', staged=True))
+            self.mudancas.append(Mudanca(self, 'New file', staged=True))
 
     def add_linha(self):
         if self.tracked:
-            self.mudancas.append('New Line')
+            self.mudancas.append(Mudanca(self, 'New Line'))
 
     def remove_linha(self):
         if self.tracked:
-            self.mudancas.append('Removed Line')
+            self.mudancas.append(Mudanca(self, 'Removed line'))
+
+    # propriedades
+    def unstaged_mudancas(self):
+        return list(filter(lambda x: not x.staged, self.mudancas))
+
+    def staged_mudancas(self):
+        return list(filter(lambda x: x.staged, self.mudancas))
 
 
 class Commit:
@@ -63,10 +90,11 @@ class Commit:
 
 class Mudanca:
 
-    def __init__(self, tipo, staged=False):
+    def __init__(self, arquivo, tipo, staged=False):
         self.tipo = tipo
         self.added = False
         self.staged = staged
+        self.arquivo = arquivo
 
     def mark_as_added(self):
         self.added = True

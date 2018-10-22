@@ -5,7 +5,7 @@
     $ flask run
 """
 from flask import Flask, render_template, request, redirect, flash, session
-from business.models import Repositorio
+from business.models import Repositorio, Arquivo
 
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ def index():
     return render_template('index.html', repositorios=repositorios)
 
 
-@app.route('/novo-repositorio', methods=['post'])
+@app.route('/git-init', methods=['post'])
 def novo_repositorio():
     nome = request.form['nome']
 
@@ -66,6 +66,22 @@ def novo_arquivo():
     repositorio.novo_arquivo(nome)
     flash('Arquivo criado com sucesso!')
     return redirect('/repositorio/'+repositorio.nome)
+
+
+@app.route('/git-add/<string:filename>')
+def git_add(filename):
+    repositorio: Repositorio = obter_repositorio(por_nome=session.get('repositorio'))
+    repositorio.add(filename)
+    flash('Git add Ok!')
+    return redirect('/repositorio/' + repositorio.nome)
+
+
+@app.route('/new-line/<string:filename>')
+def nova_linha_arquivo(filename):
+    repositorio: Repositorio = obter_repositorio(por_nome=session.get('repositorio'))
+    arquivo: Arquivo = repositorio.buscar_arquivo(filename)
+    arquivo.add_linha()
+    return redirect('/repositorio/' + repositorio.nome)
 
 
 def obter_repositorio(por_nome):

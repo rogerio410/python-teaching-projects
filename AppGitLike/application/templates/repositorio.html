@@ -11,21 +11,51 @@
             <input name="nome" placeholder="Novo arquivo" required/>
             <input type="submit" value="Criar Arquivo"/>
         </form>
-        <p>Tracked Files</p>
-        <ol>
-        {% for arquivo in repositorio.tracked_files() %}
-            <li>{{ arquivo.nome }}</li>
-        {% endfor %}
-        </ol>
 
         <p>Untracked Files</p>
         <table border="1">
         {% for arquivo in repositorio.untracked_files() %}
             <tr>
                 <td>{{ arquivo.nome }}</td>
-                <td><a href="add_arquivo/{{ arquivo.nome }}">Add</a></td>
+                <td><a href="/git-add/{{ arquivo.nome }}">Add</a></td>
             </tr>
         {% endfor %}
         </table>
+
+        <p>Tracked Files</p>
+        <table border="1">
+        {% for arquivo in repositorio.tracked_files() %}
+            <tr>
+                <td>{{ arquivo.nome }}</td>
+                <td><a href="/new-line/{{ arquivo.nome }}">Add linha</a></td>
+            </tr>
+        {% endfor %}
+        </table>
+
     </div>
+
+    <div>
+        <h4>Unstaged Changes ({{ repositorio.unstaged_changes() | length}})</h4>
+        <table>
+            {% for mudanca in repositorio.unstaged_changes() %}
+                <tr>
+                    <td>{{ mudanca.tipo }}</td>
+                    <td>{{ mudanca.arquivo.nome }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div>
+        <h4>Staged Changes ({{ repositorio.staged_changes() | length}})</h4>
+        <table>
+            {% for mudanca in repositorio.staged_changes() %}
+                <tr>
+                    <td>{{ mudanca.tipo }}</td>
+                    <td>{{ mudanca.arquivo.nome }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
 {% endblock %}
